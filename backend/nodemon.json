@@ -1,0 +1,8 @@
+{
+    "verbose": true,
+    "ignore": [
+        "uploads/",
+        "**/uploads/**",
+        "node_modules"
+    ]
+}
