@@ -84,11 +84,10 @@ h1 {
   padding: 3rem 2rem;
   text-align: center;
   transition: all 0.2s;
-  cursor: pointer;
   margin-bottom: 2rem;
 }
 
-.upload-card:hover {
+.upload-card:has(.upload-label:hover) {
   border-color: var(--primary);
   background: #fafbfc;
 }

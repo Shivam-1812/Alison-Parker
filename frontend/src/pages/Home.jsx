@@ -22,7 +22,7 @@ const Home = () => {
                 </div>
                 <h1>Codebase Explainer</h1>
                 <p className="subtitle">
-                    Upload your project zip and get an instant AI-powered architectural overview and diagram.
+                    Upload your project zip or provide a GitHub URL to get an instant AI-powered architectural overview and diagram.
                 </p>
             </div>
 

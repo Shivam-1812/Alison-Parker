@@ -16,3 +16,8 @@ export const analyzeProject = async (file) => {
     });
     return response.data;
 };
+
+export const analyzeGitHubRepo = async (repoUrl) => {
+    const response = await api.post('/analyze/github', { repoUrl });
+    return response.data;
+};
