@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({
     baseURL: '/api', // Proxy handles this
-    timeout: 60000, // 1 minute timeout for AI processing
+    timeout: 120000, // 2 minutes timeout for AI processing
 });
 
 export const analyzeProject = async (file) => {
