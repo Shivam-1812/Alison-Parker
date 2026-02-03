@@ -12,9 +12,11 @@ const path = require('path');
 const performAnalysis = async (extractedPath) => {
     // 1. Get Structure using safe file scanner
     const scanResults = await fileService.getProjectStructure(extractedPath);
+    console.log('📁 Scan Results:', { fileCount: scanResults.files.length, structure: scanResults.structure.slice(0, 5) });
 
     // 2. Analyze Codebase with scan results
     const analysisResult = await parserService.analyzeProject(extractedPath, scanResults);
+    console.log('🔍 Analysis Result:', JSON.stringify(analysisResult, null, 2));
 
     // 3. Build Metadata
     const metadata = metadataBuilder.buildMetadata(
@@ -22,6 +24,7 @@ const performAnalysis = async (extractedPath) => {
         scanResults.structure,
         analysisResult.data
     );
+    console.log('📊 Metadata Built:', JSON.stringify(metadata.technologies, null, 2));
 
     // 4. Get AI Explanation
     const aiResponse = await aiService.generateExplanation(metadata, scanResults.structure);
@@ -38,7 +41,11 @@ const performAnalysis = async (extractedPath) => {
  * Analyze ZIP project
  */
 exports.analyzeZipProject = async (req, res) => {
+    console.log('🚀 analyzeZipProject endpoint hit!');
+    console.log('📨 Request file:', req.file ? 'Present' : 'Missing');
+
     if (!req.file) {
+        console.log('❌ No file in request');
         return res.status(400).json({ error: 'No ZIP file uploaded' });
     }
 
@@ -46,19 +53,27 @@ exports.analyzeZipProject = async (req, res) => {
     const extractDir = path.join(__dirname, '../../uploads', 'temp-' + Date.now());
 
     try {
-        console.log(`Processing ZIP file: ${req.file.originalname}`);
+        console.log('='.repeat(60));
+        console.log(`📦 Processing ZIP file: ${req.file.originalname}`);
+        console.log(`📏 File size: ${(req.file.size / 1024 / 1024).toFixed(2)} MB`);
+        console.log(`📍 ZIP path: ${zipPath}`);
+        console.log(`📂 Extract dir: ${extractDir}`);
 
         // Extract ZIP with safety checks
         const extractedPath = await fileService.extractZipSafe(zipPath, extractDir);
+        console.log(`✅ Extracted to: ${extractedPath}`);
 
         // Perform analysis
         const result = await performAnalysis(extractedPath);
 
         // Respond
+        console.log('✅ Analysis complete, sending response...');
         res.json(result);
+        console.log('='.repeat(60));
 
     } catch (error) {
-        console.error('ZIP analysis failed:', error);
+        console.error('❌ ZIP analysis failed:', error.message);
+        console.error('Stack trace:', error.stack);
 
         // Handle specific error types
         if (error.message.includes('zip bomb') || error.message.includes('file limit exceeded')) {
