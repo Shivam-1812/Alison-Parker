@@ -1,4 +1,4 @@
-# AI Codebase Explainer MVP
+# AI Codebase Explainer 
 
 A simple, powerful tool to analyze a codebase (Node.js, Python, Java) and generate an architectural explanation using Gemini AI.
 
